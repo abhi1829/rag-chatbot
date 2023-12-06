@@ -1,0 +1,48 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Chatbot{% endblock %}
+{% block head %}
+
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'chatbot/style.css' %}">
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="mx-auto max-w-md mt-8 bg-gray-100 rounded-lg p-6">
+        <div class="chat-container overflow-y-auto max-h-80">
+            <div class="botText" id="chatbot">
+                <p class="text-sm text-gray-600">Hello! How can I assist you today?</p>
+            </div>
+
+            <!-- Add more messages as needed -->
+
+            <!-- Dummy input box for demonstration -->
+            <div class="flex mt-4" id="userInput">
+                <input type="text" id="textInput" placeholder="Type your message..." class="flex-1 border p-2 rounded-md focus:outline-none focus:border-cyan-500">
+                <button class="ml-2 px-4 py-2 bg-cyan-500 text-black rounded-md hover:bg-cyan-700 focus:outline-none" type = "submit" id="buttonInput">Send</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        async function getUserResponse() {
+            var userText = $("#textInput").val();
+            var userHTML = "<p class='userText'>User:<span>" + userText + "</span/></p>";
+            $("#textInput").val("");
+            $('#chatbot').append(userHTML);
+
+            // Use the fetch API to send a GET request to your Django view
+            const response = await fetch(`/chat/getResponse/?userMessage=${encodeURIComponent(userText)}`);
+            const data = await response.json();
+
+            console.log(data);
+
+            var returnedMessage = "<p class='botText'>Chatbot:<span>" + data.AI_response + "</span/></p>";
+            $('#chatbot').append(returnedMessage);
+        }
+
+        $("#buttonInput").click(function () {
+            getUserResponse();
+        });
+    </script>
+{% endblock %}

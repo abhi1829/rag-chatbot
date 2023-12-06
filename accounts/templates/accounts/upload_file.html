@@ -1,0 +1,39 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Upload Files | Puch Na{% endblock %}
+
+{% block content %}
+<div class="container mx-auto mt-8">
+    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <h2 class="text-2xl font-bold mb-4 text-center">Upload Files</h2>
+
+        <form method="post" enctype="multipart/form-data" id="uploadForm">
+            {% csrf_token %}
+
+            <div class="mb-4">
+                <label for="{{ form.file_type.id_for_label }}" class="block text-gray-700 text-sm font-bold mb-2">Select file type:</label>
+                {{ form.file_type }}
+            </div>
+
+            <div class="mb-4">
+                <label for="{{ form.file.id_for_label }}" class="block text-gray-700 text-sm font-bold mb-2">Choose file:</label>
+                {{ form.file }}
+            </div>
+
+            <div class="text-center">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Upload</button>
+            </div>
+        </form>
+
+        <!-- Display uploaded file details -->
+        {% if file_details %}
+        <div class="mt-4">
+            <h4 class="text-center font-bold text-lg">Uploaded File Details:</h4>
+            <p class="text-center"><strong>File Type:</strong> {{ file_details.file_type }}</p>
+            <p class="text-center"><strong>File Name:</strong> {{ file_details.file.name }}</p>
+            <p class="text-center"><strong>File Size:</strong> {{ file_details.file.size }}</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

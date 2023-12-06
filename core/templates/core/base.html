@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Include Tailwind CSS from a CDN or your local installation -->
+        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+        <title>{% block title %}{% endblock %}| Puch Na </title>
+        {% block head %}
+        {% endblock %}
+    </head>
+    <body>
+        <div style="background-color: #44403c;" class="p-4">
+            <div class="container mx-auto">
+            <!-- Navigation Bar -->
+                <nav class="flex justify-between items-center">
+                    <h1 class="text-3xl font-bold text-white underline">
+                    Puch Na
+                    </h1>
+                    
+                <ul class="flex space-x-4">
+                    {% if request.user.is_authenticated %}
+                        {% if '/accounts/upload/' in request.path %}
+                            <li><a href={% url 'chatbot:chat_screen' %} class="text-white">Chat</a></li>
+                            <li><a href={% url 'accounts:dashboard' %} class="text-white">Dashboard</a></li>
+                            <li><a href={% url 'accounts:logout' %} class="text-white">Logout</a></li>
+                        {% elif '/chat/chat_screen/' in request.path %}
+                            <li><a href={% url 'accounts:upload_file' %} class="text-white">Upload Files</a></li>
+                            <li><a href={% url 'accounts:dashboard' %} class="text-white">Dashboard</a></li>
+                            <li><a href={% url 'accounts:logout' %} class="text-white">Logout</a></li>
+                        {% else %}
+                            <li><a href={% url 'accounts:upload_file' %} class="text-white">Upload Files</a></li>
+                            <li><a href={% url 'chatbot:chat_screen' %} class="text-white">Chat</a></li>
+                            <li><a href={% url 'accounts:logout' %} class="text-white">Logout</a></li>
+                        {% endif %}
+                    {% else %}
+                        <li><a href={% url 'accounts:login' %} class="text-white">Login</a></li>
+                        <li><a href={% url 'accounts:signup' %} class="text-white">Sign Up</a></li>
+                    {% endif %}
+                </ul>
+                </nav>
+            </div>
+        </div>
+
+        <main class="container mx-auto mt-8">
+            {% block content %}
+            {% endblock %}
+        </main>
+    </body>
+</html>
